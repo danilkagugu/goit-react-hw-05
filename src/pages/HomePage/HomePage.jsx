@@ -1,33 +1,34 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { ApiTrendingMovies } from "../../components/ApiService/ApiService";
 
+import { ApiTrendingMovies } from "../../components/ApiService/ApiService";
+import MovieList from "../../components/MovieList/MovieList";
+import css from "./HomePage.module.css";
+import Loader from "../../components/Loader/Loader";
 const HomePage = () => {
-  const [qwe, setQwe] = useState([]);
+  const [movies, setMovies] = useState([]);
+  const [loader, setLoader] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
       try {
+        setLoader(true);
         const { results } = await ApiTrendingMovies();
-        setQwe(results);
+        setMovies(results);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoader(false);
       }
     }
     fetchData();
   }, []);
 
   return (
-    <div>
-      <h1>Trending Today</h1>
-      <ul>
-        {qwe.map((item) => (
-          <li key={item.id}>
-            <Link to={`/movies/${item.id}`}>{item.original_title}</Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <>
+      <h1 className={css.title}>Trending Today</h1>
+      {loader && <Loader />}
+      <MovieList movies={movies} />
+    </>
   );
 };
 

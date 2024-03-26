@@ -3,17 +3,18 @@ import { Link, Route, Routes, useParams } from "react-router-dom";
 import { ApiMovieDetails } from "../../components/ApiService/ApiService";
 import MovieCast from "../../components/MovieCast/MovieCast";
 import MovieReviews from "../../components/MovieReviews/MovieReviews";
-
+import css from "./MovieDetailsPage.module.css";
 const img = "https://image.tmdb.org/t/p/w500";
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
-  const [qwe, setQwe] = useState([]);
+  const [movie, setMovie] = useState([]);
   useEffect(() => {
     async function fetchData() {
       try {
         const results = await ApiMovieDetails(movieId);
-        setQwe(results);
+        console.log(results);
+        setMovie(results);
       } catch (error) {
         console.log(error);
       }
@@ -22,26 +23,56 @@ const MovieDetailsPage = () => {
   }, [movieId]);
   return (
     <div>
-      <div>
-        <img src={img + qwe.poster_path} alt={qwe.original_title} width={150} />
-        <div>
-          <h1>{qwe.original_title}</h1>
-          <p>User Score: {qwe.vote_average * 10}%</p>
+      <div className={css.detailsMovies}>
+        <div className={css.leftBox}>
+          <img
+            src={img + movie.poster_path}
+            alt={movie.original_title}
+            width={300}
+          />
+          <h1 className={css.title}>{movie.original_title}</h1>
+        </div>
+        <div className={css.infoBox}>
+          <p className={css.score}>User Score: {movie.vote_average * 10}%</p>
           <h2>Overwiew</h2>
-          <p>{qwe.overview}</p>
+          <p className={css.overview}>{movie.overview}</p>
           <h2>Genres</h2>
-          {qwe.genres && (
-            <p>{qwe.genres.map((genre) => genre.name).join(", ")}</p>
+          {movie.genres && (
+            <p className={css.genres}>
+              {movie.genres.map((genre) => genre.name).join(", ")}
+            </p>
           )}
+          <div>
+            <h2 className={css.titleCompany}>Company</h2>
+            <div className={css.companyBox}>
+              {movie.production_companies &&
+                movie.production_companies.map((path) => (
+                  <div key={path.id} className={css.companyItem}>
+                    <div className={css.companyItem}>
+                      <h3 className={css.companyName}>{path.name}</h3>
+                      <img src={img + path.logo_path} width={200} />
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
         </div>
       </div>
-      <h3>Aditional information</h3>
-      <Link to="cast">Cast</Link>
-      <Link to="reviews">Rewiews</Link>
-      <Routes>
-        <Route path="cast" element={<MovieCast />}></Route>
-        <Route path="reviews" element={<MovieReviews />}></Route>
-      </Routes>
+      <div>
+        <h3 className={css.aditionalInfo}>Aditional information</h3>
+        <div className={css.boxDetailes}>
+          <Link className={css.itemDetailes} to="cast">
+            Cast
+          </Link>
+          <Link className={css.itemDetailes} to="reviews">
+            Rewiews
+          </Link>
+        </div>
+        <Routes>
+          <Route path="cast" element={<MovieCast />}></Route>
+          <Route path="reviews" element={<MovieReviews />}></Route>
+        </Routes>
+      </div>
     </div>
   );
 };

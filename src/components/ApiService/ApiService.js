@@ -47,3 +47,14 @@ export const ApiMovieRewiews = async (id) => {
   const response = await axios.get(url, options);
   return response.data;
 };
+export const ApiMovieSearch = async (query) => {
+  const url = `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=en-US&page=1`;
+
+  const options = {
+    headers: {
+      Authorization: `Bearer ${AUTH_TOKEN}`,
+    },
+  };
+  const response = await axios.get(url, options);
+  return response.data;
+};
