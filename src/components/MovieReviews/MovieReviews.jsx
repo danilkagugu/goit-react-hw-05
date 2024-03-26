@@ -10,16 +10,15 @@ const MovieReviews = () => {
       try {
         const results = await ApiMovieRewiews(movieId);
         setRewiews(results);
-        console.log(results);
       } catch (error) {
         console.log(error);
       }
     }
     fetchData();
-  }, [movieId]);
+  }, [movieId, rewiews]);
   return (
     <>
-      {rewiews <= 0 ? (
+      {rewiews.length === 0 ? (
         <p className={css.noResult}>
           We do not have any rewiews for this movies😢
         </p>

@@ -10,7 +10,8 @@ const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState([]);
   const location = useLocation();
-  const linkBack = useRef(location.state);
+  const linkBack = useRef(location.state ?? "/");
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -31,6 +32,9 @@ const MovieDetailsPage = () => {
             alt={movie.original_title}
             width={300}
           />
+          <Link className={css.goBack} to={linkBack.current}>
+            Go Back
+          </Link>
           <h1 className={css.title}>{movie.original_title}</h1>
         </div>
         <div className={css.infoBox}>

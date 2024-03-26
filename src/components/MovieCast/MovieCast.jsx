@@ -20,7 +20,7 @@ const MovieCast = () => {
   }, [movieId]);
   return (
     <div>
-      {cast <= 0 ? (
+      {cast.length === 0 ? (
         <p className={css.noResult}>
           We do not have any cast for this movies😢
         </p>
