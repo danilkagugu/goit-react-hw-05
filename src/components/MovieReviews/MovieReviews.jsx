@@ -4,12 +4,13 @@ import { useParams } from "react-router-dom";
 import css from "./MovieReviews.module.css";
 const MovieReviews = () => {
   const { movieId } = useParams();
-  const [rewiews, setRewiews] = useState({ results: [] });
+  const [rewiews, setRewiews] = useState([]);
   useEffect(() => {
     async function fetchData() {
       try {
         const results = await ApiMovieRewiews(movieId);
         setRewiews(results);
+        console.log(results);
       } catch (error) {
         console.log(error);
       }
@@ -18,7 +19,7 @@ const MovieReviews = () => {
   }, [movieId]);
   return (
     <>
-      {rewiews.results <= 0 ? (
+      {rewiews <= 0 ? (
         <p className={css.noResult}>
           We do not have any rewiews for this movies😢
         </p>

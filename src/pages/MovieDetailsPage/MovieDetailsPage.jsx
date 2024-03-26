@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link, Route, Routes, useParams } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link, Route, Routes, useLocation, useParams } from "react-router-dom";
 import { ApiMovieDetails } from "../../components/ApiService/ApiService";
 import MovieCast from "../../components/MovieCast/MovieCast";
 import MovieReviews from "../../components/MovieReviews/MovieReviews";
@@ -9,11 +9,12 @@ const img = "https://image.tmdb.org/t/p/w500";
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState([]);
+  const location = useLocation();
+  const linkBack = useRef(location.state);
   useEffect(() => {
     async function fetchData() {
       try {
         const results = await ApiMovieDetails(movieId);
-        console.log(results);
         setMovie(results);
       } catch (error) {
         console.log(error);
@@ -61,10 +62,14 @@ const MovieDetailsPage = () => {
       <div>
         <h3 className={css.aditionalInfo}>Aditional information</h3>
         <div className={css.boxDetailes}>
-          <Link className={css.itemDetailes} to="cast">
+          <Link className={css.itemDetailes} to="cast" state={linkBack.current}>
             Cast
           </Link>
-          <Link className={css.itemDetailes} to="reviews">
+          <Link
+            className={css.itemDetailes}
+            to="reviews"
+            state={linkBack.current}
+          >
             Rewiews
           </Link>
         </div>

@@ -6,7 +6,7 @@ const img = "https://image.tmdb.org/t/p/w500";
 
 const MovieCast = () => {
   const { movieId } = useParams();
-  const [cast, setCast] = useState({ cast: [] });
+  const [cast, setCast] = useState([]);
   useEffect(() => {
     async function fetchData() {
       try {
@@ -20,15 +20,17 @@ const MovieCast = () => {
   }, [movieId]);
   return (
     <div>
-      <ul className={css.castList}>
-        {cast.cast.map((item) => (
-          <li className={css.castItem} key={item.id}>
-            <img src={img + item.profile_path} alt={item.name} width={200} />
-            <p>{item.name}</p>
-            <p>{item.character}</p>
-          </li>
-        ))}
-      </ul>
+      {cast && (
+        <ul className={css.castList}>
+          {cast.cast.map((item) => (
+            <li className={css.castItem} key={item.id}>
+              <img src={img + item.profile_path} alt={item.name} width={200} />
+              <p>{item.name}</p>
+              <p>{item.character}</p>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
