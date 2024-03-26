@@ -20,7 +20,11 @@ const MovieCast = () => {
   }, [movieId]);
   return (
     <div>
-      {cast && (
+      {cast <= 0 ? (
+        <p className={css.noResult}>
+          We do not have any cast for this movies😢
+        </p>
+      ) : (
         <ul className={css.castList}>
           {cast.cast.map((item) => (
             <li className={css.castItem} key={item.id}>
